@@ -228,4 +228,111 @@ Take a look at the CSS documentation for more information.
 
 ## 🛑 Optimizing Fonts and Images
 
+### ⁉️ Why optimize fonts?
+
+- Fonts play a significant role in the design of a website, but using custom fonts in your project can affect performance if the font files need to be fetched and loaded.
+
+- [Cumulative Layout Shift](https://web.dev/articles/cls?hl=tr) is a metric used by `Google` to evaluate the performance and user experience of a website.
+- With fonts, layout shift happens when the browser initially renders text in a fallback or system font and then swaps it out for a custom font once it has loaded.
+- This swap can cause the text size, spacing, or layout to change, shifting elements around it.
+- Next.js automatically optimizes fonts in the application when you use the `next/font` module.
+- It does so by downloading font files at build time and hosting them with your other static assets.
+- This means when a user visits your application, there are no additional network requests for fonts which would impact performance.
+
+Let's add a custom Google font to your application to see how this works!
+
+### 🚩 Adding a primary font
+
+- In your `/app/ui` folder, create a new file called `fonts.ts`
+- You'll use this file to keep the fonts that will be used throughout your application.
+- Import the `Inter` font from the `next/font/google module` - this will be your primary font.
+
+```typescript
+import { Inter } from 'next/font/google';
+```
+
+- Then, specify what [subset](https://fonts.google.com/knowledge/glossary/subsetting) you'd like to load. In this case, `latin`:
+
+```typescript
+import { Inter } from 'next/font/google';
+
+export const inter = Inter({ subsets: ['latin'] });
+```
+
+- Finally, add the font to the `<body>` element in `/app/layout.tsx`:
+
+```typescript
+import '@/app/ui/global.css';
+import { inter } from '@/app/ui/fonts';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className={`${inter.className} antialiased`}>{children}</body>
+    </html>
+  );
+}
+```
+
+- By adding Inter to the `<body>` element, the font will be applied throughout your application.
+- Here, you're also adding the Tailwind [antialiased](https://tailwindcss.com/docs/font-smoothing) class which smooths out the font. It's not necessary to use this class, but it adds a nice touch to your fonts.
+
+- Navigate to your browser, open `dev tools` and select the body element. You should see `Inter` and `Inter_Fallback` are now applied under styles. You can also add fonts to specific elements of your application.
+
+## 🚩 To add another custom fonts; customize `fonts.ts` and `page.tsx` file:
+
+```typescript
+import { Inter, Lusitana } from 'next/font/google';
+ 
+export const inter = Inter({ subsets: ['latin'] });
+ 
+export const lusitana = Lusitana({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
+```
+
+```typescript
+import AcmeLogo from '@/app/ui/acme-logo';
+import Link from 'next/link';
+import styles from '@/app/ui/home.module.css';
+import { lusitana } from '@/app/ui/fonts';
+
+
+export default function Page() {
+  return (
+    <main className="flex min-h-screen flex-col p-6">
+      <div className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
+        {/* <AcmeLogo /> */}
+      </div>
+      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
+        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
+          <div className={styles.shape}/>
+          <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
+            <strong>Welcome to Acme.</strong> This is the example for the{' '}
+            <a href="https://nextjs.org/learn/" className="text-blue-500">
+              Next.js Learn Course
+            </a>
+            , brought to you by Vercel.
+          </p>
+          <Link
+            href="/login"
+            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+          >
+            <span>Log in</span>
+          </Link>
+        </div>
+        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
+          {/* Add Hero Images Here */}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+```
 
