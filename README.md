@@ -79,3 +79,29 @@ npm run dev
 
 - "npm run dev" starts your Next.js development server on port 3000.
 - Let’s check to see if it’s working. Open http://localhost:3000 on your browser.
+
+# 🚩 CSS STYLING:
+
+## 🛑 Global Styles:
+
+- If you look inside the "/app/ui" folder, you'll see a file called "global.css."
+- You can use this file to add CSS rules to all the routes in your application - such as CSS reset rules, site-wide styles for HTML elements like links, and more.
+- You can import "global.css" in any component in your application, but it's usually good practice to add it to your TOP-LEVEL component.
+- In Next.js, this is the ROOT LAYOUT (more on this later).
+- Add global styles to your application by navigating to "/app/layout.tsx" and importing the "global.css" file:
+
+```typescript
+import '@/app/ui/global.css';
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
