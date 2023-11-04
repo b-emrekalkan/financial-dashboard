@@ -333,6 +333,48 @@ export default function Page() {
     </main>
   );
 }
-
 ```
 
+## 🚩 The `<Image>` component
+
+- Instead of manually handling these optimizations, you can use the `next/image` component to automatically optimize your images.
+
+- The `<Image>` Component is an extension of the HTML `<img>` tag, and comes with automatic image optimization, such as:
+
+  + Preventing layout shift automatically when images are loading.
+  + Resizing images to avoid shipping large images to devices with a smaller viewport.
+  + Lazy loading images by default (images load as they enter the viewport).
+  + Serving images in modern formats, like [WebP](https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types#webp) and [AVIF](https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types#avif_image), when the browser supports it.
+
+## ❇️ Adding the desktop hero image
+
+- Let's swap the `<img>` tag for an `<Image>` component.
+
+- In your `/app/page.tsx` file, import the component from `next/image`.
+
+- Then, add the image under the comment in `/app/page.tsx`:
+
+```typescript
+import Image from 'next/image';
+ 
+export default function Page() {
+  return (
+    // ...
+    <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
+      {/* Add Hero Images Here */}
+      <Image
+        src="/hero-desktop.png"
+        width={1000}
+        height={760}
+        className="hidden md:block"
+        alt="Screenshots of the dashboard project showing desktop and mobile versions"
+      />
+    </div>
+    //...
+  );
+}
+```
+
+- Here, you're setting the `width` to 1000 and `height` to 760 pixels.
+- It's good practice to set the width and height of your images to avoid layout shift, these should be an aspect ratio identical to the source image.
+- You'll also notice the class `hidden` to remove the image from the DOM on mobile screens, and `md:block` to show the image on desktop screens.
