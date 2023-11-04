@@ -378,3 +378,43 @@ export default function Page() {
 - Here, you're setting the `width` to 1000 and `height` to 760 pixels.
 - It's good practice to set the width and height of your images to avoid layout shift, these should be an aspect ratio identical to the source image.
 - You'll also notice the class `hidden` to remove the image from the DOM on mobile screens, and `md:block` to show the image on desktop screens.
+
+### 🚩 Add another hero images for mobile devices in `page.tsx`
+
+```typescript
+  <Image
+    src="/hero-mobile.png"
+    width={560}
+    height={620}
+    className="block md:hidden"
+    alt="Screenshots of the dashboard project showing mobile versions"
+  />
+```
+
+- 👆 It will be shown on mobile screens, and hidden on desktop with `block md:hidden`
+
+## ✅ Recommended reading
+
+- [Image Optimization Docs](https://nextjs.org/docs/app/building-your-application/optimizing/images)
+- [Font Optimization Docs](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
+- [Improving Web Performance with Images (MDN)](https://developer.mozilla.org/en-US/docs/Learn/Performance/Multimedia)
+- [Web Fonts (MDN)](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
+
+<hr>
+
+## 🚩 Creating Layouts and Pages
+
+### ❇️ Nested routing
+
+- Next.js uses file-system routing where folders are used to create nested routes.
+- Each folder represents a route segment that maps to a URL segment 👇
+
+  + acme.com/`dashboard`/`incoices`
+
+- `page.tsx` is a special Next.js file that exports a React component containing the UI for the route.
+- In your application, you already have a page file: `/app/page.tsx` - this is the `home page` which is associated with the route `/`.
+
+- ✅ To create a nested route, you can nest folders inside each other with their own `page.tsx` files. For example:
+  + `/app/login/page.tsx` is associated with the `/login` path. Let's create the page to see how it works!
+
+## 🚩 Creating the dashboard page
