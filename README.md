@@ -417,4 +417,13 @@ export default function Page() {
 - ✅ To create a nested route, you can nest folders inside each other with their own `page.tsx` files. For example:
   + `/app/login/page.tsx` is associated with the `/login` path. Let's create the page to see how it works!
 
-## 🚩 Creating the dashboard page
+## 🚩 CREATING THE DASHBOARD PAGE
+
+- Create a new folder called `dashboard` inside `/app.`
+- Then, create a new `page.tsx` file inside the dashboard folder with the following content:
+
+```typescript
+export default function Page() {
+  return <p>Dashboard Page</p>;
+}
+```
