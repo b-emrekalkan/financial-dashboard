@@ -427,3 +427,17 @@ export default function Page() {
   return <p>Dashboard Page</p>;
 }
 ```
+
+- Now, make sure that the development server is running and visit `http://localhost:3000/dashboard`.
+
+- This is how you can create different pages in Next.js 👉 `create a new route segment using a folder, and add a page file inside it.`
+
+- By having a special name for `page` files, Next.js allows you to [colocate](https://nextjs.org/docs/app/building-your-application/routing#colocation) UI components, test files, and other related code with your routes.
+
+- Only the content inside the `page` file will be publicly accessible.
+
+## 📂 In your dashboard, create two more pages named `customers` and `invoices`
+
+- The customers page should be accessible on `http://localhost:3000/dashboard/customers`.
+
+- The invoices page should be accessible on `http://localhost:3000/dashboard/invoices`.
