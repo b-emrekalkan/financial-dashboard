@@ -441,3 +441,5 @@ export default function Page() {
 - The customers page should be accessible on `http://localhost:3000/dashboard/customers`.
 
 - The invoices page should be accessible on `http://localhost:3000/dashboard/invoices`.
+
+## 🚩 CREATING THE DASHBOARD LAYOUT
