@@ -486,3 +486,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 - Since the new layout you've just created `(/app/dashboard/layout.tsx)` is unique to the dashboard pages, you don't need to add any UI to the root layout above.
 
 ## 🚩 NAVIGATING BETWEEN PAGES
+
+### 🔍 The `<Link>` component
+
+- In Next.js, you can use the `Link` Component to link between pages in your application.
+- `<Link>` allows you to do `client-side navigation` with JavaScript.
+- Although parts of your application are rendered on the server, navigation is faster and there's `NO FULL PAGE REFRESH` - making it feel more like a web app.
+
+<hr>
+
+### ❇️ Here's how to use the `<Link>` Component:
+
+- 👉 Open `/app/ui/dashboard/nav-links.tsx`, and import the `Link` component from `next/link`:
+
+```typescript
+import Link from 'next/link';
+```
+
+- 👉 Find the `<a>` tag and replace it with `<Link>`:
+
+✅ Save and check how to navigate between the pages `without seeing a full refresh`.
