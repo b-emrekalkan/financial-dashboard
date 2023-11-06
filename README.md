@@ -465,10 +465,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-- ⁉️ A few things are going on in this code, so let's break it down:
+### ⁉️ A few things are going on in this code, so let's break it down:
 
-  + First, you're importing the `<SideNav />` component into your layout.
-  + Any components you import into this file will be part of the layout.
-  + The Layout component receives a children prop.
-  + The child can either be a page or another layout.
-  + In your case, the pages inside /dashboard will automatically be nested inside a Layout like so:
+- First, you're importing the `<SideNav/>` component into your layout from `app/ui/dashboard/sidenav`.
+- Any components you import into this file will be part of the layout.
+- The `Layout` component receives a `children` prop.
+- The child can either be a page or another layout.
+- In your case, the pages inside `/dashboard` will automatically be nested inside a `Layout`.
+
+- You can check everything is working correctly by accessing the pages you've created here 👉 http://localhost:3000/dashboard:
+
+✅ One benefit of using layout is that on navigation, only the page components update while the layout won't re-render.
+✅ In Next.js, this is called [partial rendering](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#3-partial-rendering):
+
+## 🚩 ROOT LAYOUT
+
+- `/app/layout.tsx.` layout is required and is called a [root layout](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required).
+- Any UI you add to the root layout will be shared across all pages in your application.
+- You can use the root layout to modify your `<html>` and `<body>` tags, and add metadata.
+- Since the new layout you've just created `(/app/dashboard/layout.tsx)` is unique to the dashboard pages, you don't need to add any UI to the root layout above.
+
+## 🚩 NAVIGATING BETWEEN PAGES
