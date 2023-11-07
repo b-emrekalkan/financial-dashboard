@@ -604,3 +604,24 @@ export default function NavLinks() {
 - Learn more about [how navigation works](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works).
 
 ## 🚩 SETTING UP YOUR DATABASE
+
+### ❇️ Create a Postgres database
+
+- To set up a database, on your `VERCEL` account; click Continue to `Dashboard` and select the `Storage` tab from your project dashboard.
+- Select `Connect Store` 👉 `Create New` 👉 `Postgres` 👉 `Continue`.
+- Accept the terms, assign a name to your database, and ensure your database region is set to Washington D.C (iad1) - this is also the [default region](https://vercel.com/docs/functions/configuring-functions/region#select-a-default-serverless-region) for all new Vercel projects.
+- And click `Create&Continue`
+- By placing your database in the same region or close to your application code, you can reduce [latency](https://developer.mozilla.org/en-US/docs/Web/Performance/Understanding_latency) for data requests.
+
+<hr>
+
+- Once connected, navigate to the `.env.local` tab, click `Show secret` and `Copy Snippet`.
+
+- 🚩 Navigate to your code editor and rename the `.env.example` file to `.env`. Paste in the copied contents from Vercel.
+
+#### 🛑 `Important:` Go to your `.gitignore` file and make sure `.env` is in the ignored files to prevent your database secrets from being exposed when you push to GitHub.
+
+- Finally, run `npm i @vercel/postgres` in your terminal to install the [Vercel Postgres SDK](https://vercel.com/docs/storage/vercel-postgres/sdk).
+
+### ❇️ SEED YOUR DATABASE
+
