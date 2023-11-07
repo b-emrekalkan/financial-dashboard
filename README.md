@@ -625,3 +625,215 @@ export default function NavLinks() {
 
 ### ❇️ SEED YOUR DATABASE
 
+- Now that your database has been created, let's seed it with some initial data. This will allow you to have some data to work with as you build the dashboard.
+
+- In the `/scripts` folder of your project, there's a file called `seed.js`. This script contains the instructions for creating and seeding the invoices, customers, user, revenue tables.
+
+- Don't worry if you don't understand everything the code is doing, but to give you an overview, the script uses SQL to create the tables, and the data from `placeholder-data.js` file to populate them after they've been created.
+
+- Next, in your `package.json` file, add the following line to your scripts:
+
+```json
+"scripts": {
+  "seed": "node -r dotenv/config ./scripts/seed.js"
+},
+```
+
+- 👆 This is the command that will execute the `seed.js`.
+
+🖥️ Now, run `npm run seed`. You should see some console.log messages in your terminal to let you know the script is running.
+
+<hr>
+
+### ⁉️ What is 'seeding' in the context of databases?
+
+#### 👉 Populating the database with an initial set of data
+
+<hr>
+
+
+## 🚩 EXPLORING YOUR DATABASE
+
+- Let's see what your database looks like. Go back to `Vercel`, and click `Data` in the sidenav.
+
+- In this section, you'll find the four new tables: `users, customers, invoices, revenue`.
+
+- By selecting each table, you can view its records and ensure the entries align with the data from `placeholder-data.js` file.
+
+## EXECUTING QUERIES
+
+- You can switch to the `"query"` tab to interact with your database.
+- This section supports standard SQL commands.
+- For instance, inputting `DROP TABLE customers` will delete "customers" table along with all its data - `so be careful!`
+
+- Let's run your first database query. Paste and run the following SQL code into the Vercel interface:
+
+```sql
+SELECT invoices.amount, customers.name
+FROM invoices
+JOIN customers ON invoices.customer_id = customers.id
+WHERE invoices.amount = 666;
+```
+
+## 🚩 FETCHING DATA
+
+  Now that you've created and seeded your database, let's discuss the different ways you can fetch data for your application, and choose the most appropriate one for the dashboard overview page.
+
+### 🔍 CHOOSING HOW TO FETCH DATA
+
+#### 1️⃣ API layer
+
+- APIs are an intermediary layer between your application code and database. There are a few cases where you might use an API:
+
+  + If you're using 3rd party services that provide an API.
+  + If you're fetching data from the client, you want to have an API layer that runs on the server to avoid exposing your database secrets to the client.
+
+- In Next.js, you can create API endpoints using [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+#### 2️⃣ Database queries
+
+- When you're creating a full-stack application, you'll also need to write logic to interact with your database.
+- For [relational databases](https://aws.amazon.com/tr/relational-database/) like `Postgres`, you can do this with `SQL` or an [ORM](https://vercel.com/docs/storage/vercel-postgres/using-an-orm#) like [Prisma](https://www.prisma.io/).
+
+- There are a few cases where you have to write database queries:
+
+  + When creating your API endpoints, you need to write logic to interact with your database.
+  + If you are using React Server Components (fetching data on the server), you can skip the API layer, and query your database directly without risking exposing your database secrets to the client.
+  + ‼️ you should not query your database directly when fetching data on the client as this would expose your database secrets.
+
+#### 3️⃣ Using Server Components to fetch data
+
+- By default, Next.js applications use `React Server Components`, and you can opt into `Client Components` when needed.
+- There are a few benefits to fetching data with React Server Components:
+
+  + Server components allow you fetch data directly from your database.
+  + Server Components execute on the server, so you can keep expensive data fetches and logic on the server and only send the result to the client.
+  + Server Components support promises, providing a simpler solution for asynchronous tasks like data fetching. You can use `async/await` syntax without reaching out for `useEffect`, `useState` or data fetching libraries.
+  + Since Server Components execute on the server, you can query the database directly without an additional API layer.
+
+<hr>
+
+#### 4️⃣ Using SQL
+
+- For the dashboard project, you'll write database queries using the [Vercel Postgres SDK](https://vercel.com/docs/storage/vercel-postgres/sdk) and SQL.
+- There are a few reasons why we'll be using SQL:
+
+  + SQL is the industry standard for querying relational databases (e.g. ORMs generate SQL under the hood).
+  + Having a basic understanding of SQL can help you understand the fundamentals of relational databases, allowing you to apply your knowledge to other tools.
+  + SQL is versatile, allowing you to fetch and manipulate specific data.
+  + SQL allows you to write targeted queries to fetch and manipulate specific data.
+  + The Vercel Postgres SDK provides protection against [SQL injections](https://vercel.com/docs/storage/vercel-postgres/sdk#preventing-sql-injections).
+
+<hr>
+
+### 🚩 Go to `/app/lib/data.ts`
+
+- Here you'll see that we're importing the sql function from `@vercel/postgres`.
+- This function allows you to query your database:
+
+```typescript
+import { sql } from '@vercel/postgres';
+
+// ...
+```
+
+- You can call `sql` inside any Server Component.
+- But to allow you to navigate the components more easily, we've kept all the data queries in the `data.ts` file, and you can import them into the components.
+
+### 🚩 Fetching data for the dashboard overview page
+
+- Now that you understand different ways of fetching data,
+- Let's fetch data for the dashboard overview page.
+- Navigate to `/app/dashboard/page.tsx`, paste the following code, and spend some time exploring it:
+
+```typescript
+import { Card } from '@/app/ui/dashboard/cards';
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+import { lusitana } from '@/app/ui/fonts';
+ 
+export default async function Page() {
+  return (
+    <main>
+      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        Dashboard
+      </h1>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* <Card title="Collected" value={totalPaidInvoices} type="collected" /> */}
+        {/* <Card title="Pending" value={totalPendingInvoices} type="pending" /> */}
+        {/* <Card title="Total Invoices" value={numberOfInvoices} type="invoices" /> */}
+        {/* <Card
+          title="Total Customers"
+          value={numberOfCustomers}
+          type="customers"
+        /> */}
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        {/* <RevenueChart revenue={revenue}  /> */}
+        {/* <LatestInvoices latestInvoices={latestInvoices} /> */}
+      </div>
+    </main>
+  );
+}
+```
+
+- In the code above:
+
+  + Page is an `async` component. This allows you to use await to fetch data.
+  + There are also 3 components which receive data: `<Card>`, `<RevenueChart>`, and `<LatestInvoices>`.
+  + They are currently commented out to prevent the application from erroring.
+
+### 🚩 Fetching data for `<RevenueChart/>`
+
+- To fetch data for the `<RevenueChart/>` component, import the `fetchRevenue` function from `data.ts` and call it inside your component:
+
+```typescript
+import { Card } from '@/app/ui/dashboard/cards';
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+import { lusitana } from '@/app/ui/fonts';
+import { fetchRevenue } from '@/app/lib/data';
+ 
+export default async function Page() {
+  const revenue = await fetchRevenue();
+  // ...
+}
+```
+
+- Then, uncomment the `<RevenueChart/>` component and anything inside the `RevenueChart()` function in `@/app/ui/dashboard/revenue-chart';`. Check your localhost, you're now using the revenue data in your component.
+
+### 🚩 Fetching data for `<LatestInvoices/>`
+
+- For the `<LatestInvoices />` component, we need to get the latest 5 invoices, sorted by date.
+
+- You could fetch all the invoices and sort through them using JavaScript. This isn't a problem as our data is small, but as your application grows, it can significantly increase the amount of data transferred on each request and the JavaScript required to sort through it.
+
+- Instead of sorting through the latest invoices in-memory, you can use an SQL query to fetch only the last 5 invoices. For example, this is the SQL query from your `data.ts` file:
+
+```typescript
+// Fetch the last 5 invoices, sorted by date
+const data = await sql<LatestInvoiceRaw>`
+  SELECT invoices.amount, customers.name, customers.image_url, customers.email
+  FROM invoices
+  JOIN customers ON invoices.customer_id = customers.id
+  ORDER BY invoices.date DESC
+  LIMIT 5`;
+```
+
+- In your page (/app/dashboard/page.tsx), import the `fetchLatestInvoices` function:
+
+```typescript
+// ..
+import { fetchRevenue, fetchLatestInvoices } from '@/app/lib/data';
+
+export default async function Page() {
+  const revenue = await fetchRevenue();
+  const latestInvoices = await fetchLatestInvoices();
+  // ...
+}
+```
+
+- Then, uncomment the `<LatestInvoices />` component in (/app/ui/dashboard/latest-invoices.tsx).
+
+If you visit your localhost, you should see that only the last 5 are returned from the database. Hopefully, you're beginning to see the advantages of querying your database directly!
+
